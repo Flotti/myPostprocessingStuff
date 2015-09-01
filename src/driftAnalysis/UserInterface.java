@@ -32,7 +32,7 @@ public class UserInterface extends JFrame implements ActionListener{
 	
 //	private String path1;
 //	private String fname1;
-	
+//	push to upstream	
 	/*Left panel (panel) objects*/
 	private JButton doItButton;
 	private JTextField inputPath1;
