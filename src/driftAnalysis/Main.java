@@ -9,6 +9,8 @@ import java.util.Arrays;
 import javax.swing.Box;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import StormLib.BeadRegistration;
 import StormLib.Demixing;
@@ -35,7 +37,23 @@ public class Main {
 //				UserInterface mainWindow = new UserInterface();
 //			}
 //		});
-//		
+	try {
+        // Set System L&F
+    UIManager.setLookAndFeel(
+        UIManager.getSystemLookAndFeelClassName());
+	} 
+	catch (UnsupportedLookAndFeelException e) {
+	   // handle exception
+	} catch (ClassNotFoundException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} catch (InstantiationException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} catch (IllegalAccessException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
 		UserInterface mainWindow = new UserInterface();		
 		
 		

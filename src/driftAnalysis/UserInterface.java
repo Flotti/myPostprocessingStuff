@@ -14,6 +14,7 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Dimension;
 import java.awt.Component;
+import java.awt.GridLayout;
 
 import functionDisplayPanels.CropCoordsDisplay;
 import functionDisplayPanels.GetLocsPerFrameDisplay;
@@ -72,6 +73,7 @@ public class UserInterface extends JFrame implements ActionListener{
 	private Component horizontalStrut_1;
 	private JPanel executionOrderDisplay;
 	private JButton btnNewButton;
+	private JScrollPane scrollPane;
 	
 	public UserInterface(){
 		
@@ -194,16 +196,20 @@ public class UserInterface extends JFrame implements ActionListener{
 						label_2.setVerticalTextPosition(SwingConstants.TOP);
 						label_2.setVerticalAlignment(SwingConstants.TOP);
 						
+						
+						
 						executionOrderDisplay = new JPanel();
+						executionOrderDisplay.setLayout(new BoxLayout(executionOrderDisplay,BoxLayout.Y_AXIS));
 						executionOrderDisplay.setBackground(Color.GRAY);
-						FlowLayout flowLayout_3 = (FlowLayout) executionOrderDisplay.getLayout();
-						flowLayout_3.setVgap(100);
-						flowLayout_3.setHgap(60);
-						
-						
-//						executionOrderDisplay.add(new JButton ("Hallo"));
-//						executionOrderDisplay.add(new JButton ("Hallo"));
 						verticalBox_1.add(executionOrderDisplay);
+						
+						scrollPane = new JScrollPane(executionOrderDisplay);
+						scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+						scrollPane.setPreferredSize(new Dimension(200, 200));
+						verticalBox_1.add(scrollPane);
+//						executionOrderDisplay.add(new JButton ("Hallo"));
+//						executionOrderDisplay.add(new JButton ("Hallo"));
+						
 						
 						
 						
@@ -235,7 +241,7 @@ public class UserInterface extends JFrame implements ActionListener{
 		for (int i = 0; i < Main.guiFunctionParametersList.size(); i++){
 //			for (int i = 0; i < 1; i++){
 //				verticalBox_1.add(Main.guiFunctionParametersList.get(i).getFunctionButton());
-				executionOrderDisplay.add(new JButton ("Hallo"));
+				//executionOrderDisplay.add(new JButton ("Hallo"));
 		}
 		this.repaint();
 	}
@@ -271,23 +277,32 @@ public class UserInterface extends JFrame implements ActionListener{
 		if (ae.getSource() == this.renderImage2DButton){
 			RenderImage2D ri2 = new RenderImage2D();
 			Main.guiFunctionParametersList.add(ri2);
-//			mainWindow.revalidate();
-			placeButtons();
+			executionOrderDisplay.add(ri2.getFunctionButton());
+			executionOrderDisplay.revalidate();
+			scrollPane.revalidate();
 		}
 		if (ae.getSource() == this.renderImage3DButton){
 			RenderImage3D ri3 = new RenderImage3D();
 			Main.guiFunctionParametersList.add(ri3);
+			executionOrderDisplay.add(ri3.getFunctionButton());
+			executionOrderDisplay.revalidate();
 		}
 		if (ae.getSource() == this.cropCoordsButton){
 			CropCoords cc = new CropCoords();
 			Main.guiFunctionParametersList.add(cc);
+			executionOrderDisplay.add(cc.getFunctionButton());
+			executionOrderDisplay.revalidate();
 		}
 		if (ae.getSource() == this.getLocsPerFrameButton){
 			GetLocsPerFrame glpf = new GetLocsPerFrame();
 			Main.guiFunctionParametersList.add(glpf);
+			executionOrderDisplay.add(glpf.getFunctionButton());
+			executionOrderDisplay.revalidate();
 		}
 		if (ae.getSource() == this.clearListButton){
 			Main.guiFunctionParametersList.clear();
+			executionOrderDisplay.removeAll();
+			executionOrderDisplay.revalidate();
 		}
 	}
 }
