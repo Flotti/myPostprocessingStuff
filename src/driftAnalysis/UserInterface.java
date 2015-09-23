@@ -302,7 +302,8 @@ public class UserInterface extends JFrame implements ActionListener{
 		if (ae.getSource() == this.clearListButton){
 			Main.guiFunctionParametersList.clear();
 			executionOrderDisplay.removeAll();
-			executionOrderDisplay.revalidate();
+			executionOrderDisplay.repaint();
+			scrollPane.revalidate();
 		}
 	}
 }

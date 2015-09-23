@@ -15,6 +15,8 @@ public class Demixing {
 	static boolean verbose = false;
 	static ExecutorService executor;
 	static ExecutorService executor2;
+	static Progressbar pbDemixing;
+	static Progressbar pbFindTrafo;
 	
 	public static StormData spectralUnmixing(StormData ch1, StormData ch2){
 		return spectralUnmixing(ch1, ch2, false);
@@ -55,10 +57,10 @@ public class Demixing {
 		}
 		DemixingData demixingData = new DemixingData();
 		int maxFrame = (int) Math.max((double)ch1.getDimensions().get(7),(double)ch2.getDimensions().get(7));
-		Progressbar pb = new Progressbar(0, maxFrame,0, "Start demixing ...");
+		pbDemixing = new Progressbar(0, maxFrame,0, "Start demixing ...");
 		for (int currFrame = 0; currFrame < maxFrame; currFrame++){
 			Runnable t = new Thread(new UnmixFrame(demixingData, coloredSet, ch1, ch2, 
-					currFrame, dist, minInt,pb, useAll, untransformedCh1));
+					currFrame, dist, minInt,pbDemixing, useAll, untransformedCh1));
 			executor2.execute(t);
 		}
 		executor2.shutdown();
@@ -88,7 +90,7 @@ public class Demixing {
 		for (int i = 1; i<10;i++){
 			frames.add((int)Math.floor((dims.get(7)+dims.get(6))/2)+i);
 		}
-		Progressbar pb = new Progressbar(0,nbrIter * frames.size(),0,"Finding transformation.");
+		pbFindTrafo = new Progressbar(0,nbrIter * frames.size(),0,"Finding transformation.");
 		if (verbose) {
 			System.out.println("finding transformation...");
 			System.out.println(nbrIter + " iterations per frame.");
@@ -101,7 +103,7 @@ public class Demixing {
 		
 		for (int frame : frames) {
 			Runnable t = new Thread(new findTransformation(collectionOfGoodPoints, listOfMatchingPoints, listOfErrors, 
-					frame, ch1, ch2, verbose, nbrIter, toleratedError, pb));
+					frame, ch1, ch2, verbose, nbrIter, toleratedError, pbFindTrafo));
 			executor.execute(t);
 		}
 		executor.shutdown();
