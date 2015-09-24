@@ -10,10 +10,10 @@ import javax.swing.JTextField;
 import gui.MainFrame;
 import gui.ProcessingStepsPanel;
 
-public class RenderImage2D extends ProcessingStepsPanel{
+public class RenderImage2DGUI extends ProcessingStepsPanel{
 	JTextField pixelsize = new JTextField();
 	JTextField tag = new JTextField();
-	public RenderImage2D(MainFrame mf) {
+	public RenderImage2DGUI(MainFrame mf) {
 		super(mf);
 		this.setParameterButtonsName("Render 2D Image");
 		this.setColor(Color.GREEN);

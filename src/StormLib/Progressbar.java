@@ -64,4 +64,8 @@ public class Progressbar {
 			endReached = true;
 		}
 	}
+	
+	public int getValue0_100(){
+		return (int) (currVal/(maxVal-minVal)*100);
+	}
 }

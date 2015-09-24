@@ -7,7 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import functionDefinitions.MultipleFileInput;
+import functionDefinitions.DualColorMultipleFileInputGUI;
 import StormLib.StormData;
 import StormLib.Utilities;
 

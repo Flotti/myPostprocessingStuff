@@ -18,11 +18,15 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import functionDefinitions.Demixing;
-import functionDefinitions.MultipleFileInput;
-import functionDefinitions.RenderImage2D;
-import functionDefinitions.RenderImage3D;
-import functionDefinitions.SingleFileInput;
+import functionDefinitions.DemixingGUI;
+import functionDefinitions.DriftcorrectionGUI;
+import functionDefinitions.DualChannelSingleFileInputGUI;
+import functionDefinitions.DualColorMultipleFileInputGUI;
+import functionDefinitions.MergePointsGUI;
+import functionDefinitions.MultipleFileInputGUI;
+import functionDefinitions.RenderImage2DGUI;
+import functionDefinitions.RenderImage3DGUI;
+import functionDefinitions.SingleFileInputGUI;
 
 import javax.swing.JLabel;
 import javax.swing.JComboBox;
@@ -115,7 +119,14 @@ public class MainFrame extends JFrame{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controler.startProcessing(getListProcessingStepPanels());
+				Thread t = new Thread(){
+					@Override
+					public 
+					void run(){
+						controler.startProcessing(getListProcessingStepPanels());
+					}
+				};
+				t.start();
 			}
 			
 		});
@@ -183,10 +194,10 @@ public class MainFrame extends JFrame{
 		if (thisBox == outputComboBox){
 			switch (thisBox.getSelectedIndex()){
 				case 0:
-					panelToAdd =new RenderImage2D(mf);
+					panelToAdd =new RenderImage2DGUI(mf);
 					break;
 				case 1:
-					panelToAdd = new RenderImage3D(mf);
+					panelToAdd = new RenderImage3DGUI(mf);
 					break;
 				case 2:
 					break;
@@ -196,21 +207,29 @@ public class MainFrame extends JFrame{
 		if (thisBox == inputComboBox){
 			switch (thisBox.getSelectedIndex()){
 				case 0:
-					panelToAdd = new SingleFileInput(mf);
+					panelToAdd = new SingleFileInputGUI(mf);
 					break;
 				case 1:
-					panelToAdd = new MultipleFileInput(mf);
+					panelToAdd = new MultipleFileInputGUI(mf);
+					break;
+				case 2:
+					panelToAdd = new DualColorMultipleFileInputGUI(mf);
+					break;
+				case 3:
+					panelToAdd = new DualChannelSingleFileInputGUI(mf);
 					break;
 			}
 		}
 		if (thisBox == processingComboBox){
 			switch (thisBox.getSelectedIndex()){
 				case 0:
+					panelToAdd = new DriftcorrectionGUI(mf);
 					break;
 				case 1:
+					panelToAdd = new MergePointsGUI(mf);
 					break;
 				case 2:
-					panelToAdd = new Demixing(mf);
+					panelToAdd = new DemixingGUI(mf);
 					break;
 			}
 		}

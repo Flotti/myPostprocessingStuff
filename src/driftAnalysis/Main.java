@@ -27,75 +27,9 @@ import functionParameters.*;
 
 public class Main {
 	
-	static GuiParameters guiParameters = new GuiParameters(); // contains path and filename to load data
-	static ArrayList<FunctionBasic> guiFunctionParametersList = new ArrayList<FunctionBasic>(); // contains list of functions to execute and their respective parameters
-
 	public static void main(String[] args) {
-//		
-//		SwingUtilities.invokeLater(new Runnable(){
-//			public void run(){
-//				UserInterface mainWindow = new UserInterface();
-//			}
-//		});
-	try {
-        // Set System L&F
-    UIManager.setLookAndFeel(
-        UIManager.getSystemLookAndFeelClassName());
-	} 
-	catch (UnsupportedLookAndFeelException e) {
-	   // handle exception
-	} catch (ClassNotFoundException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	} catch (InstantiationException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	} catch (IllegalAccessException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-		UserInterface mainWindow = new UserInterface();		
-		
-		
-	}
-
-	
-	
-	public static void execute(){
-		if (!guiParameters.isDualColor()){
-			if (guiFunctionParametersList.isEmpty()){
-				System.out.println("nix drin zum rechnen");				
-			}
-			for (int i = 0; i < guiFunctionParametersList.size(); i++){
-				switch (guiFunctionParametersList.get(i).getFunctionID()){
-				case 0: System.out.println("0");
-				break;
-				case 1: singleColor2dImage(guiParameters.getPath1(), guiParameters.getFname1());
-				break;
-				case 2: System.out.println(guiFunctionParametersList.get(i).getFunctionID() + " functionID");
-				break;
-				case 3: System.out.println(guiFunctionParametersList.get(i).getFunctionID() + " functionID");
-				break;
-				case 4: System.out.println(guiFunctionParametersList.get(i).getFunctionID() + " functionID");
-				break;
-				case 5: System.out.println(guiFunctionParametersList.get(i).getFunctionID() + " functionID");
-				break;
-				case 6: System.out.println(guiFunctionParametersList.get(i).getFunctionID() + " functionID");
-				break;
-				case 7: System.out.println(guiFunctionParametersList.get(i).getFunctionID() + " functionID");
-				break;
-				case 8: System.out.println(guiFunctionParametersList.get(i).getFunctionID() + " functionID");
-				break;
-				case 9: System.out.println(guiFunctionParametersList.get(i).getFunctionID() + " functionID");
-				break;
-				case 10: System.out.println(guiFunctionParametersList.get(i).getFunctionID() + " functionID");
-				break;
-				}
-			}
-		}
-		else{
-			System.out.println("hadada");
-		}
+			String path ="C:\\Users\\herrmannsdoerfer\\Desktop\\150714ActingPhalloidin647MitochondrienCF680rPFACosMessung1\\Auswertung\\RapidStorm\\";
+			demixingMultipleInputFiles(path, "Left", path, "Right");
 	}
 	
 	static void createVispOutput(String path, String fname){
@@ -129,8 +63,8 @@ public class Main {
 		ArrayList<StormData> list = Utilities.openSeries(path1, pattern1, path2, pattern2);
 		StormData sd1 = list.get(0);
 		StormData sd2 = list.get(1);
-		sd1.getLocsPerFrame();
-
+		//sd1.getLocsPerFrame();
+		StormData unmixedSd = Demixing.spectralUnmixing(sd1, sd2,false);
 		//System.out.println("maxFrame ch1"+sd1.getDimensions().get(7));
 		//sd1.correctDrift(5000);
 		//sd1.connectPoints(100., 100., 150, 3);
@@ -144,7 +78,7 @@ public class Main {
 		sd2.renderImage2D(10);
 
 		sd2.createPdf();
-		StormData unmixedSd = Demixing.spectralUnmixing(sd1, sd2,false);
+		
 		unmixedSd.estimateLocalizationPrecision(50, 900);
 
 		unmixedSd.correctDrift((int)Math.ceil((double)unmixedSd.getDimensions().get(7)/12));

@@ -9,8 +9,8 @@ import javax.swing.Box;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class Demixing extends ProcessingStepsPanel{
-	public Demixing(MainFrame mf) {
+public class DemixingGUI extends ProcessingStepsPanel{
+	public DemixingGUI(MainFrame mf) {
 		super(mf);
 		this.setParameterButtonsName("Demixing");
 		this.setColor(Color.RED);

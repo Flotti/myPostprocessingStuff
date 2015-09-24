@@ -2,6 +2,8 @@ package StormLib;
 
 import ij.ImagePlus;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.EOFException;
 import java.io.File;
 import java.io.IOException;
@@ -9,10 +11,55 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Observable;
 
 import Jama.Matrix;
 
-public class Utilities {
+public class Utilities{
+	private static PropertyChangeSupport propertyChangeSupport =
+		       new PropertyChangeSupport(Utilities.class);
+	private static int lastVal;
+	
+	public static void addPropertyChangeListener(PropertyChangeListener listener) {
+	       propertyChangeSupport.addPropertyChangeListener(listener);
+	   }
+
+	   public static void setProgress(String messageName, int val) {
+		  propertyChangeSupport.firePropertyChange(messageName, lastVal, val);
+		  lastVal = val;
+	   }
+	   public static StormData openSeries(String path1, String pattern1){
+			File folder = new File(path1);
+			File[] files = folder.listFiles();
+			
+			try {
+				OutputClass.createOutputFolder(path1);
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			StormData sd1 = new StormData();
+		
+			try{
+				Arrays.sort(files);
+				for (int i = 0; i<files.length; i++ ){
+					if(files[i].isFile() && files[i].getAbsolutePath().contains(pattern1)&& files[i].getAbsolutePath().contains(".txt")&&!files[i].getAbsolutePath().contains("-settings")){
+						StormData tmp = new StormData(files[i].getAbsolutePath());
+						sd1.addStormData(tmp);
+						setProgress("MultipleInput",(int)(100.*i/(files.length)));
+					}
+				}
+				sd1.setPath(path1);
+				sd1.setFname(pattern1+"mergedFile"+".txt");
+			}
+			catch(NullPointerException e){
+				System.out.println(e.getMessage());
+			}
+			return sd1;
+		}
+	   
 	public static ArrayList<StormData> openSeries(String path1, String pattern1, String path2, String pattern2){
 		File folder = new File(path1);
 		File[] files = folder.listFiles();
@@ -30,31 +77,33 @@ public class Utilities {
 		StormData sd2 = new StormData();
 		try{
 			Arrays.sort(files);
-			sd1.setPath(path1);
-			sd1.setFname(pattern1+"mergedFile"+".txt");
 			for (int i = 0; i<files.length; i++ ){
 				if(files[i].isFile() && files[i].getAbsolutePath().contains(pattern1)&& files[i].getAbsolutePath().contains(".txt")&&!files[i].getAbsolutePath().contains("-settings")){
 					StormData tmp = new StormData(files[i].getAbsolutePath());
 					sd1.addStormData(tmp);
+					setProgress("MultipleInputDC",(int)(100.*i/(files.length+files2.length)));
 				}
 			}
-			
+			sd1.setPath(path1);
+			sd1.setFname(pattern1+"mergedFile"+".txt");
 		}
-		catch(NullPointerException e){}
+		catch(NullPointerException e){
+			System.out.println(e.getMessage());
+		}
 		try{
-			Arrays.sort(files2);
-			sd2.setPath(path2);
-			sd2.setFname(pattern2+"mergedFile"+".txt");
-	
+			Arrays.sort(files2);	
 			
 			for (int i = 0; i<files2.length; i++ ){
 				if(files2[i].isFile() && files2[i].getAbsolutePath().contains(pattern2)&& files2[i].getAbsolutePath().contains(".txt")&&!files2[i].getAbsolutePath().contains("-settings")){
 					StormData tmp = new StormData(files2[i].getAbsolutePath());
 					sd2.addStormData(tmp);
+					setProgress("MultipleInput",(int)(100.*i/(files.length+files2.length)+100*files.length/(files.length+files2.length)));
 				}
 			}
 		}
 		catch(NullPointerException e){}
+		sd2.setPath(path2);
+		sd2.setFname(pattern2+"mergedFile"+".txt");
 		ArrayList<StormData> retList = new ArrayList<StormData>();
 		retList.add(sd1);
 		retList.add(sd2);
@@ -133,6 +182,7 @@ public class Utilities {
 				
 		for (int i = 0; i<framemax+1; i++){
 			for (int j = 0; j<frames.get(i).size(); j++){
+				setProgress("MergePoints", (int)(50.*i/framemax));
 				StormLocalization currLoc = frames.get(i).get(j);
 				ArrayList<StormLocalization> currTrace = new ArrayList<StormLocalization>();
 				currTrace.add(currLoc);
@@ -278,6 +328,7 @@ public class Utilities {
 		int counter = 0;
 		Progressbar pb = new Progressbar(0,traces.size(), 0,"Connecting traces ...");
 		for (int i = 0; i< traces.size(); i++) {
+			setProgress("MergePoints", (int)(50+50.*i/traces.size()));
 			if (traces.get(i).size() < 10){ //beads are not connected
 				if (traces.get(i).size()>1){
 					counter = counter + 1;

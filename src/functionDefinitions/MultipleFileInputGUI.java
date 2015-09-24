@@ -10,12 +10,12 @@ import javax.swing.JTextField;
 import gui.MainFrame;
 import gui.ProcessingStepsPanel;
 
-public class SingleFileInput extends ProcessingStepsPanel{
+public class MultipleFileInputGUI extends ProcessingStepsPanel{
 	JTextField path = new JTextField();
-	JTextField foldername = new JTextField();
-	public SingleFileInput(MainFrame mf) {
+	JTextField pattern = new JTextField();
+	public MultipleFileInputGUI(MainFrame mf) {
 		super(mf);
-		this.setParameterButtonsName("Single File Input");
+		this.setParameterButtonsName("Multiple File Input");
 		this.setColor(Color.WHITE);
 		this.setOptionPanel(createOptionPanel());
 	}
@@ -26,8 +26,8 @@ public class SingleFileInput extends ProcessingStepsPanel{
 		Box verticalBox = Box.createVerticalBox();
 		verticalBox.add(new JLabel("Path:"));
 		verticalBox.add(path);
-		verticalBox.add(new JLabel("Foldername:"));
-		verticalBox.add(foldername);
+		verticalBox.add(new JLabel("Pattern:"));
+		verticalBox.add(pattern);
 		retPanel.add(verticalBox);
 		return retPanel;
 	}
@@ -35,7 +35,7 @@ public class SingleFileInput extends ProcessingStepsPanel{
 	public String getPath(){
 		return path.getText();
 	}
-	public String getFoldername(){
-		return foldername.getText();
+	public String getPattern(){
+		return pattern.getText();
 	}
 }

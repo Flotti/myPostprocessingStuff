@@ -183,7 +183,16 @@ public class Demixing {
 		}
 		return distMat;
 	}
-	
+	public static int getProgressbarValue(){
+		int retVal = 0;
+		if (pbDemixing != null){
+			retVal = retVal + (int)(0.5*pbDemixing.getValue0_100());
+		}
+		if (pbFindTrafo != null){
+			retVal = retVal + (int)(0.5*pbFindTrafo.getValue0_100());
+		}
+		return retVal;
+	}
 }
 
 class Pair<T extends Comparable<T>> implements Comparable<Pair<T>>{

@@ -10,10 +10,10 @@ import javax.swing.JTextField;
 import gui.MainFrame;
 import gui.ProcessingStepsPanel;
 
-public class RenderImage3D extends ProcessingStepsPanel{
+public class RenderImage3DGUI extends ProcessingStepsPanel{
 	JTextField pixelsize = new JTextField();
 	JTextField tag = new JTextField();
-	public RenderImage3D(MainFrame mf) {
+	public RenderImage3DGUI(MainFrame mf) {
 		super(mf);
 		this.setParameterButtonsName("Render 3D Image");
 		this.setColor(Color.GREEN);

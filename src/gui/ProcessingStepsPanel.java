@@ -14,6 +14,7 @@ import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 
 public class ProcessingStepsPanel extends JPanel implements Transferable{
 	/**
@@ -27,19 +28,23 @@ public class ProcessingStepsPanel extends JPanel implements Transferable{
 	private Color color;
 	private boolean visibilityOptionPanel = false;
 	private JPanel optionPanel;
+	private JProgressBar progressbar;
 	
 	public ProcessingStepsPanel(final MainFrame mf){
 		thisPanel = this;
 		Box horizontalBox = Box.createHorizontalBox();
-		this.add(horizontalBox);
+		Box verticalBox = Box.createVerticalBox();
+		final Dimension d = new Dimension(300,50);
+		verticalBox.setPreferredSize(d);
+		verticalBox.add(horizontalBox);
+		this.add(verticalBox);
 		this.mf = mf;
 		this.addMouseListener(new MyDraggableMouseListener());
 		this.setTransferHandler(new DragAndDropTransferHandler());
 		this.setBackground(Color.cyan);
-		final Dimension d = new Dimension(300,30);
-		this.setPreferredSize(d);
-		this.setMinimumSize(d);
 		this.setMaximumSize(d);
+		this.setPreferredSize(d);
+
 		parameterButton = new JButton();
 		parameterButton.addActionListener(new ActionListener(){
 			@Override
@@ -49,6 +54,7 @@ public class ProcessingStepsPanel extends JPanel implements Transferable{
 				mf.repaint();
 			}
 		});
+				
 		JButton removeButton = new JButton("X");
 		removeButton.addActionListener(new ActionListener(){
 			@Override
@@ -59,9 +65,17 @@ public class ProcessingStepsPanel extends JPanel implements Transferable{
 			}
 		});
 		horizontalBox.add(parameterButton);
-		Component vg = Box.createVerticalGlue();
+		Component vg = Box.createHorizontalGlue();
 		horizontalBox.add(vg);
 		horizontalBox.add(removeButton);
+		
+		Component verticalGlue = Box.createVerticalGlue();
+		verticalBox.add(verticalGlue);
+		
+		progressbar = new JProgressBar(0,100);
+		progressbar.setValue(0);
+		progressbar.setPreferredSize(new Dimension(d.width,20));
+		verticalBox.add(progressbar);
 	}
 	
 	public void setParameterButtonsName(String name){
@@ -132,7 +146,10 @@ public class ProcessingStepsPanel extends JPanel implements Transferable{
 		this.optionPanel = optionPanel;
 		mf.optionPanel.add(optionPanel);
 		optionPanel.setVisible(visibilityOptionPanel);
+		mf.hideAllOptionPanels();
+		setVisibilityOptionPanel(true);
 		mf.repaint();
+		
 	}
 
 	public boolean getIsVisibilityOptionPanel() {
@@ -142,6 +159,10 @@ public class ProcessingStepsPanel extends JPanel implements Transferable{
 	public void setVisibilityOptionPanel(boolean visibilityOptionPanel) {
 		this.visibilityOptionPanel = visibilityOptionPanel;
 		optionPanel.setVisible(visibilityOptionPanel);
+	}
+	
+	public void setProgressbarValue(int val){
+		progressbar.setValue(val);
 	}
 
 }

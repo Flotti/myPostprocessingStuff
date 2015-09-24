@@ -10,6 +10,8 @@ import java.io.EOFException;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -36,11 +38,14 @@ public class StormData {
 	private String fname;
 	private String processingLog = "-";
 	private ArrayList<Object> logs = new ArrayList<Object>();
+	private String outputPath;
 	
 	public StormData(String path, String fname){
-		this.path = path;
-		this.fname = fname;
-		importData(path+fname);
+		Path fullPath = (Paths.get(path, fname));
+		this.path = fullPath.getParent().toString()+"\\";
+		this.fname = fullPath.getFileName().toString();
+		this.outputPath = this.path;
+		importData(this.path+fname);
 	}
 	
 	public StormData(StormData sl){
@@ -1020,7 +1025,7 @@ public class StormData {
 		return subsets;
 	}
 	
-	public StormData findSubset(int minFrame, int maxFrame, boolean setZCoordToZero){
+	public synchronized StormData findSubset(int minFrame, int maxFrame, boolean setZCoordToZero){
 		int currframe = minFrame;
 		StormData subset = new StormData();
 		subset.setFname(fname);
